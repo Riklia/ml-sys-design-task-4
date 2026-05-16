@@ -14,10 +14,6 @@ import yaml
 from typing import Dict, List, Optional
 from dataclasses import dataclass, asdict
 from kubernetes import client, config
-from kubeflow.katib import V1beta1Experiment, V1beta1AlgorithmSpec, V1beta1ObjectiveSpec
-from kubeflow.katib import V1beta1ParameterSpec, V1beta1NasConfig, V1beta1TrialTemplate
-from kubeflow.katib import V1beta1TrialSpec
-from kubeflow.katib import ApiClient, CustomObjectsApi
 import time
 
 
@@ -94,7 +90,7 @@ class KatibExperimentManager:
                 print("[KATIB] Warning: Could not load kubeconfig")
         
         self.api_client = client.ApiClient()
-        self.custom_api = CustomObjectsApi(self.api_client)
+        self.custom_api = client.CustomObjectsApi(self.api_client)
         self.v1_client = client.CoreV1Api()
         
         print(f"[KATIB] Manager initialized for namespace: {namespace}")
@@ -110,7 +106,7 @@ class KatibExperimentManager:
         trial_template_yaml: Optional[str] = None,
         max_trial_count: Optional[int] = None,
         nas_config: Optional[Dict] = None,
-    ) -> V1beta1Experiment:
+    ) -> Dict:
         """
         Create a Katib experiment definition.
         
@@ -126,7 +122,7 @@ class KatibExperimentManager:
             nas_config: NAS configuration if using NAS algorithm
         
         Returns:
-            V1beta1Experiment object
+            Experiment specification dict
         """
         print(f"\n[KATIB] Creating experiment: {name}")
         print(f"[KATIB] Algorithm: {algorithm}")
