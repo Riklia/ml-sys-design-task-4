@@ -16,7 +16,7 @@ from dataclasses import dataclass, asdict
 from kubernetes import client, config
 from kubeflow.katib import V1beta1Experiment, V1beta1AlgorithmSpec, V1beta1ObjectiveSpec
 from kubeflow.katib import V1beta1ParameterSpec, V1beta1NasConfig, V1beta1TrialTemplate
-from kubeflow.katib import V1beta1TrialSpec, V1beta1GoalType
+from kubeflow.katib import V1beta1TrialSpec
 from kubeflow.katib import ApiClient, CustomObjectsApi
 import time
 
