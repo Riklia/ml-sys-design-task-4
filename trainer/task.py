@@ -1,6 +1,6 @@
 import argparse
 
-import cloudml_hypertune
+import hypertune
 import tensorflow as tf
 
 
@@ -48,6 +48,17 @@ def build_model(learning_rate, hidden_units, dropout_rate):
     return model
 
 
+def report_metric(value, step):
+    print(f"val_accuracy={value}")
+
+    hpt = hypertune.HyperTune()
+    hpt.report_hyperparameter_tuning_metric(
+        hyperparameter_metric_tag="val_accuracy",
+        metric_value=value,
+        global_step=step,
+    )
+
+
 def main():
     args = parse_args()
 
@@ -69,13 +80,7 @@ def main():
     )
 
     val_accuracy = float(history.history["val_accuracy"][-1])
-
-    hypertune = cloudml_hypertune.HyperTune()
-    hypertune.report_hyperparameter_tuning_metric(
-        hyperparameter_metric_tag="val_accuracy",
-        metric_value=val_accuracy,
-        global_step=args.epochs,
-    )
+    report_metric(val_accuracy, args.epochs)
 
 
 if __name__ == "__main__":

@@ -1,4 +1,5 @@
 google-cloud-aiplatform
 google-cloud-storage
+cloudml-hypertune
 build
 tensorflow
